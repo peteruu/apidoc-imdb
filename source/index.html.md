@@ -1,5 +1,5 @@
 ---
-title: API Reference
+title: API Reference 2
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
