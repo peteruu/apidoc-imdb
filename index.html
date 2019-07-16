@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference 2</title>
+    <title>Imdb Unofficial Api</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -201,7 +201,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;,&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;php&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -211,10 +211,7 @@
     <div class="toc-wrapper">
       <img src="images/logo.png" class="logo" alt="Logo" />
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
-              <a href="#" data-language-name="javascript">javascript</a>
+              <a href="#" data-language-name="php">php</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -222,282 +219,813 @@
         <ul class="search-results"></ul>
       <ul id="toc" class="toc-list-h1">
           <li>
-            <a href="#introduction-10" class="toc-h1 toc-link" data-title="Introduction 10">Introduction 10</a>
+            <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
           </li>
           <li>
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
           </li>
           <li>
-            <a href="#kittens" class="toc-h1 toc-link" data-title="Kittens">Kittens</a>
+            <a href="#query-parameters" class="toc-h1 toc-link" data-title="Query Parameters">Query Parameters</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-all-kittens" class="toc-h2 toc-link" data-title="Get All Kittens">Get All Kittens</a>
+                    <a href="#extra" class="toc-h2 toc-link" data-title="Extra">Extra</a>
                   </li>
                   <li>
-                    <a href="#get-a-specific-kitten" class="toc-h2 toc-link" data-title="Get a Specific Kitten">Get a Specific Kitten</a>
+                    <a href="#item-title" class="toc-h2 toc-link" data-title="Item (title)">Item (title)</a>
                   </li>
                   <li>
-                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="Delete a Specific Kitten">Delete a Specific Kitten</a>
+                    <a href="#full-example-title" class="toc-h2 toc-link" data-title="Full Example (title)">Full Example (title)</a>
+                  </li>
+                  <li>
+                    <a href="#item-person" class="toc-h2 toc-link" data-title="Item (person)">Item (person)</a>
+                  </li>
+                  <li>
+                    <a href="#full-example-person" class="toc-h2 toc-link" data-title="Full Example (person)">Full Example (person)</a>
                   </li>
               </ul>
           </li>
-          <li>
-            <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
-          </li>
       </ul>
-        <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/lord/slate'>Documentation Powered by Slate</a></li>
-        </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='introduction-10'>Introduction 10</h1>
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
-
-<p>We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
-
-<p>This example API documentation page was created with <a href="https://github.com/lord/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&#39;s documentation.</p>
+        <h1 id='introduction'>Introduction</h1>
+<p>Welcome to the Imdb Unofficial API! You can use our API to access Imdb content.
+In examples we are using symfony component called <a href="https://symfony.com/doc/current/components/http_client.html">The HttpClient Component</a></p>
 <h1 id='authentication'>Authentication</h1>
 <blockquote>
 <p>To authorize, use this code:</p>
 </blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$api_key</span> <span class="o">=</span> <span class="nx">YOURAPIKEY</span><span class="p">;</span>
+<span class="nv">$query_parameters</span> <span class="o">=</span> <span class="nx">QUERYPARAMETERS</span><span class="p">;</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<span class="nv">$httpClient</span> <span class="o">=</span> <span class="nx">HttpClient</span><span class="o">::</span><span class="na">create</span><span class="p">([</span>
+    <span class="s1">'headers'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'X-AUTH-API'</span> <span class="o">=&gt;</span> <span class="nv">$api_key</span><span class="p">],</span>
+<span class="p">]);</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$httpClient</span><span class="o">-&gt;</span><span class="na">request</span><span class="p">(</span><span class="s1">'GET'</span><span class="p">,</span> <span class="s1">'https://admin.bunny-holding.com/api'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'query'</span> <span class="o">=&gt;</span> <span class="nv">$query_parameters</span><span class="p">,]);</span>
+<span class="cp">?&gt;</span>
 </code></pre>
 <blockquote>
-<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
+<p>Make sure to replace <code>YOURAPIKEY</code> with your API key.
+Make sure to replace <code>QUERYPARAMETERS</code> with parameters as it is defined in API.</p>
 </blockquote>
 
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
+<p>Each project has different API key. Before making any request with your api key please be sure you configured allowed titles in <a href="https://admin.bunny-holding.com">admin</a></p>
 
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+<p>API key must be included in all API requests to the server in a header that looks like the following:</p>
 
-<p><code>Authorization: meowmeowmeow</code></p>
+<p><code>X-AUTH-API: YOURAPIKEY</code></p>
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+    You must replace <code>YOURAPIKEY</code> with your API key from your project in [admin](https://admin.bunny-holding.com).
 </aside>
-<h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<h1 id='query-parameters'>Query Parameters</h1>
+<p>Query parameters are used to generated specific response. You can combine it in any way you want.</p>
+<h2 id='extra'>Extra</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$query_parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'extra'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'popularTitles'</span><span class="p">,</span> <span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'imageSrc'</span><span class="p">]],</span>
+        <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'latestTitles'</span><span class="p">,</span> <span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">],</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'imageSrc'</span><span class="p">]],</span>
+        <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'latestEpisodes'</span><span class="p">,</span> <span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">],</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'episodeParent'</span><span class="p">]],</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+<span class="cp">?&gt;</span>
 </code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves all kittens.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://example.com/api/kittens</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
-</tr>
-<tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
-</tr>
-</tbody></table>
+<p>Required: false
+    <table class="table table-responsive">
+        <tr>
+            <th>Function</th>
+            <th>Parameters</th>
+            <th>Properties</th>
+            <th>Description</th>
+        </tr>
+                    <tr>
+                <td>popularTitles</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>15</div></p>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-<h2 id='get-a-specific-kitten'>Get a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, slug, imageSrc</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, description, imageSrc, season, episode, duration, contentRating, metascore, locations, keywords, awards, rating, releasedYear, releasedMonth, releasedDay, episodeParent, slug, category</div></p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<p></td>
+                <td>
+                    list of popular titles
+                </td>
+            </tr>
+                    <tr>
+                <td>latestTitles</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>15</div></p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, slug, imageSrc</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, description, imageSrc, season, episode, duration, contentRating, metascore, locations, keywords, awards, rating, releasedYear, releasedMonth, releasedDay, episodeParent, slug, category</div></p>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<p></td>
+                <td>
+                    list of latest titles
+                </td>
+            </tr>
+                    <tr>
+                <td>latestEpisodes</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>15</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, slug, imageSrc</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, description, imageSrc, season, episode, duration, contentRating, metascore, locations, keywords, awards, rating, releasedYear, releasedMonth, releasedDay, episodeParent, slug, category</div></p>
+
+<p></td>
+                <td>
+                    list of latest episodes
+                </td>
+            </tr>
+            </table></p>
+<h2 id='item-title'>Item (title)</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$query_parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'item'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">587</span><span class="p">,</span>
+        <span class="s1">'entity'</span> <span class="o">=&gt;</span> <span class="s1">'Title'</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+<span class="cp">?&gt;</span>
 </code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
+<p>Required: false</p>
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
-</tr>
-</tbody></table>
-<h2 id='delete-a-specific-kitten'>Delete a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -X DELETE
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<p><table class="table table-responsive">
+        <tr>
+            <th>Parameter</th>
+            <th>Required</th>
+            <th>Allowed Values</th>
+            <th>Format</th>
+            <th>Description</th>
+        </tr>
+                    <tr>
+                <td>entity</td>
+                <td>                        yes
+                                    </td>
+                <td>
+                                            Title
+                                    </td>
+                <td>
+                    string
+                </td>
+                <td>static text, identify collection</td>
+            </tr>
+                    <tr>
+                <td>id</td>
+                <td>                        yes
+                                    </td>
+                <td>
+                                                        </td>
+                <td>
+                    integer
+                </td>
+                <td>the ID of major title</td>
+            </tr>
+                    <tr>
+                <td>properties</td>
+                <td>                        no
+                                    </td>
+                <td>
+                                                                        <a href="#properties">properties</a>
+                                                            </td>
+                <td>
+                    array
+                </td>
+                <td>array of properties</td>
+            </tr>
+                    <tr>
+                <td>relations</td>
+                <td>                        no
+                                    </td>
+                <td>
+                                                                        <a href="#relations">relations</a>
+                                                            </td>
+                <td>
+                    array
+                </td>
+                <td>array of relations</td>
+            </tr>
+                    <tr>
+                <td>methods</td>
+                <td>                        no
+                                    </td>
+                <td>
+                                                                        <a href="#methods">methods</a>
+                                                            </td>
+                <td>
+                    array
+                </td>
+                <td>array of methods</td>
+            </tr>
+            </table></p>
+<h3 id='properties'>Properties</h3><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$query_parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'item'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">587</span><span class="p">,</span>
+        <span class="s1">'entity'</span> <span class="o">=&gt;</span> <span class="s1">'Title'</span><span class="p">,</span>
+        <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'description'</span><span class="p">,</span> <span class="s1">'imageSrc'</span><span class="p">,</span> <span class="s1">'season'</span><span class="p">,</span> <span class="s1">'episode'</span><span class="p">,</span> <span class="s1">'duration'</span><span class="p">,</span> <span class="s1">'contentRating'</span><span class="p">,</span> <span class="s1">'metascore'</span><span class="p">,</span>
+            <span class="s1">'locations'</span><span class="p">,</span><span class="s1">'keywords'</span><span class="p">,</span> <span class="s1">'awards'</span><span class="p">,</span> <span class="s1">'rating'</span><span class="p">,</span> <span class="s1">'releasedYear'</span><span class="p">,</span> <span class="s1">'releasedMonth'</span><span class="p">,</span> <span class="s1">'releasedDay'</span><span class="p">,</span><span class="s1">'category'</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+<span class="cp">?&gt;</span>
 </code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"deleted"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">":("</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint deletes a specific kitten.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>DELETE http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the kitten to delete</td>
-</tr>
-</tbody></table>
-<h1 id='errors'>Errors</h1>
-<aside class="notice">
-This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
-</aside>
+<p><table>
+        <thead>
+            <tr>
+                <th>Default</th>
+                <th>Valid Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>id, name, slug, imageSrc</td>
+                <td>id, name, description, imageSrc, season, episode, duration, contentRating, metascore, locations, keywords, awards, rating, releasedYear, releasedMonth, releasedDay, episodeParent, slug, category</td>
+            </tr>
+        </tbody>
+    </table></p>
+<h3 id='relations'>Relations</h3><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$query_parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'item'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">587</span><span class="p">,</span>
+        <span class="s1">'entity'</span> <span class="o">=&gt;</span> <span class="s1">'Title'</span><span class="p">,</span>
+        <span class="s1">'relations'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'cast'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'companies'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'countries'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">],],</span>
+            <span class="s1">'languages'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">],],</span>
+            <span class="s1">'externalSites'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'genres'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'photos'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'reviews'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'plotSummaries'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'trivia'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'videos'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">]],</span>
+            <span class="s1">'trailer'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+<p><table class="table table-responsive">
+        <tr>
+            <th>Function</th>
+            <th>Parameters</th>
+            <th>Properties</th>
+            <th>Description</th>
+        </tr>
+                    <tr>
+                <td>cast</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>20</div></p>
 
-<p>The Kittn API uses the following error codes:</p>
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>role, characterName, person</div>
+    <div><span><strong>Valid Options:</strong> </span>role, characterName, person</div></p>
 
-<table><thead>
-<tr>
-<th>Error Code</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>400</td>
-<td>Bad Request -- Your request is invalid.</td>
-</tr>
-<tr>
-<td>401</td>
-<td>Unauthorized -- Your API key is wrong.</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden -- The kitten requested is hidden for administrators only.</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found -- The specified kitten could not be found.</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed -- You tried to access a kitten with an invalid method.</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone -- The kitten requested has been removed from our servers.</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&#39;m a teapot.</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests -- You&#39;re requesting too many kittens! Slow down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
-</tr>
-</tbody></table>
+<p></td>
+                <td>
+                    list of cast
+                </td>
+            </tr>
+                    <tr>
+                <td>companies</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>5</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name</div></p>
+
+<p></td>
+                <td>
+                    list of companies
+                </td>
+            </tr>
+                    <tr>
+                <td>countries</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>5</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, code</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, code</div></p>
+
+<p></td>
+                <td>
+                    list of countries
+                </td>
+            </tr>
+                    <tr>
+                <td>languages</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>5</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, code</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, code</div></p>
+
+<p></td>
+                <td>
+                    list of languages
+                </td>
+            </tr>
+                    <tr>
+                <td>externalSites</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>5</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, cloakedUrl</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, cloakedUrl</div></p>
+
+<p></td>
+                <td>
+                    list of external sites
+                </td>
+            </tr>
+                    <tr>
+                <td>genres</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>5</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name</div></p>
+
+<p></td>
+                <td>
+                    list of genres
+                </td>
+            </tr>
+                    <tr>
+                <td>photos</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>5</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, imageSrc</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, imageSrc</div></p>
+
+<p></td>
+                <td>
+                    list of photos
+                </td>
+            </tr>
+                    <tr>
+                <td>reviews</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>5</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, content, category, rating, titleRating</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, content, category, rating, titleRating</div></p>
+
+<p></td>
+                <td>
+                    list of reviews
+                </td>
+            </tr>
+                    <tr>
+                <td>videos</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>5</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, externalId, name, category, duration, imageSrc</div>
+    <div><span><strong>Valid Options:</strong> </span>id, externalId, name, category, duration, imageSrc</div></p>
+
+<p></td>
+                <td>
+                    list of videos
+                </td>
+            </tr>
+                    <tr>
+                <td>trailer</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>5</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, externalId, name, category, duration, imageSrc</div>
+    <div><span><strong>Valid Options:</strong> </span>id, externalId, name, category, duration, imageSrc</div></p>
+
+<p></td>
+                <td>
+                    list of trailers
+                </td>
+            </tr>
+                    <tr>
+                <td>plotSummaries</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>5</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, content, category, rating, titleRating</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, content, category, rating, titleRating</div></p>
+
+<p></td>
+                <td>
+                    list of plot summaries
+                </td>
+            </tr>
+                    <tr>
+                <td>trivia</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>5</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, content, category, rating, titleRating</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, content, category, rating, titleRating</div></p>
+
+<p></td>
+                <td>
+                    list of trivia
+                </td>
+            </tr>
+            </table></p>
+<h3 id='methods'>Methods</h3><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$query_parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'item'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">587</span><span class="p">,</span>
+        <span class="s1">'entity'</span> <span class="o">=&gt;</span> <span class="s1">'Title'</span><span class="p">,</span>
+        <span class="s1">'methods'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'otherTitles'</span><span class="p">,</span> <span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'imageSrc'</span><span class="p">]],</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'randomDescription'</span><span class="p">],</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'listSeasons'</span><span class="p">,</span> <span class="p">],</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'listSeasonsWithEpisodes'</span><span class="p">,</span> <span class="p">],</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'nextEpisode'</span><span class="p">,</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'season'</span><span class="p">,</span> <span class="s1">'episode'</span><span class="p">]],</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'previousEpisode'</span><span class="p">,</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'season'</span><span class="p">,</span> <span class="s1">'episode'</span><span class="p">]],</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+<p><table class="table table-responsive">
+        <tr>
+            <th>Function</th>
+            <th>Parameters</th>
+            <th>Properties</th>
+            <th>Description</th>
+        </tr>
+                    <tr>
+                <td>otherTitles</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>10</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, slug, imageSrc</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, description, imageSrc, season, episode, duration, contentRating, metascore, locations, keywords, awards, rating, releasedYear, releasedMonth, releasedDay, episodeParent, slug, category</div></p>
+
+<p></td>
+                <td>
+                    other titles based on major title
+                </td>
+            </tr>
+                    <tr>
+                <td>randomDescription</td>
+                <td>
+                                            None.
+                                    </td>
+                <td>
+                                            None.
+                                    </td>
+                <td>
+                    generate random description
+                </td>
+            </tr>
+                    <tr>
+                <td>listSeasons</td>
+                <td>
+                                            None.
+                                    </td>
+                <td>
+                                            None.
+                                    </td>
+                <td>
+                    list of seasons if major entity is a tv show
+                </td>
+            </tr>
+                    <tr>
+                <td>listSeasonsWithEpisodes</td>
+                <td>
+                                            None.
+                                    </td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, slug, imageSrc</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, description, imageSrc, season, episode, duration, contentRating, metascore, locations, keywords, awards, rating, releasedYear, releasedMonth, releasedDay, episodeParent, slug, category</div></p>
+
+<p></td>
+                <td>
+                    list of seasons with episodes as objects
+                </td>
+            </tr>
+                    <tr>
+                <td>nextEpisode</td>
+                <td>
+                                            None.
+                                    </td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, slug, imageSrc</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, description, imageSrc, season, episode, duration, contentRating, metascore, locations, keywords, awards, rating, releasedYear, releasedMonth, releasedDay, episodeParent, slug, category</div></p>
+
+<p></td>
+                <td>
+                    next episode if major entity is episode
+                </td>
+            </tr>
+                    <tr>
+                <td>previousEpisode</td>
+                <td>
+                                            None.
+                                    </td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, slug, imageSrc</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, description, imageSrc, season, episode, duration, contentRating, metascore, locations, keywords, awards, rating, releasedYear, releasedMonth, releasedDay, episodeParent, slug, category</div></p>
+
+<p></td>
+                <td>
+                    previous episode if major entity is episode
+                </td>
+            </tr>
+            </table></p>
+<h2 id='full-example-title'>Full Example (title)</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$query_parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'item'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">587</span><span class="p">,</span>
+        <span class="s1">'entity'</span> <span class="o">=&gt;</span> <span class="s1">'Title'</span><span class="p">,</span>
+        <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'description'</span><span class="p">,</span> <span class="s1">'imageSrc'</span><span class="p">,</span> <span class="s1">'season'</span><span class="p">,</span> <span class="s1">'episode'</span><span class="p">,</span> <span class="s1">'duration'</span><span class="p">,</span> <span class="s1">'contentRating'</span><span class="p">,</span> <span class="s1">'metascore'</span><span class="p">,</span>
+            <span class="s1">'locations'</span><span class="p">,</span><span class="s1">'keywords'</span><span class="p">,</span> <span class="s1">'awards'</span><span class="p">,</span> <span class="s1">'rating'</span><span class="p">,</span> <span class="s1">'releasedYear'</span><span class="p">,</span> <span class="s1">'releasedMonth'</span><span class="p">,</span> <span class="s1">'releasedDay'</span><span class="p">,</span><span class="s1">'category'</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s1">'relations'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'cast'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'companies'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'countries'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">],],</span>
+            <span class="s1">'languages'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">],],</span>
+            <span class="s1">'externalSites'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'genres'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'photos'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'reviews'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'plotSummaries'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'trivia'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s1">'videos'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">]],</span>
+            <span class="s1">'trailer'</span> <span class="o">=&gt;</span>  <span class="p">[</span><span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]],</span>
+        <span class="p">],</span>
+        <span class="s1">'methods'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'otherTitles'</span><span class="p">,</span> <span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'imageSrc'</span><span class="p">]],</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'randomDescription'</span><span class="p">],</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'listSeasons'</span><span class="p">,</span> <span class="p">],</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'listSeasonsWithEpisodes'</span><span class="p">,</span> <span class="p">],</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'nextEpisode'</span><span class="p">,</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'season'</span><span class="p">,</span> <span class="s1">'episode'</span><span class="p">]],</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'previousEpisode'</span><span class="p">,</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'season'</span><span class="p">,</span> <span class="s1">'episode'</span><span class="p">]],</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+    <span class="s1">'extra'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'popularTitles'</span><span class="p">,</span> <span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'imageSrc'</span><span class="p">]],</span>
+        <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'latestTitles'</span><span class="p">,</span> <span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">],</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'imageSrc'</span><span class="p">]],</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+<span class="nv">$api_key</span> <span class="o">=</span> <span class="nx">YOURAPIKEY</span><span class="p">;</span>
+
+<span class="nv">$httpClient</span> <span class="o">=</span> <span class="nx">HttpClient</span><span class="o">::</span><span class="na">create</span><span class="p">([</span>
+<span class="s1">'headers'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'X-AUTH-API'</span> <span class="o">=&gt;</span> <span class="nv">$api_key</span><span class="p">],</span>
+<span class="p">]);</span>
+
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$httpClient</span><span class="o">-&gt;</span><span class="na">request</span><span class="p">(</span><span class="s1">'GET'</span><span class="p">,</span> <span class="s1">'https://admin.bunny-holding.com/api'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'query'</span> <span class="o">=&gt;</span> <span class="nv">$query_parameters</span><span class="p">,]);</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+<p>Working example with full configuration for title</p>
+<h2 id='item-person'>Item (person)</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$query_parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'item'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">25</span><span class="p">,</span>
+        <span class="s1">'entity'</span> <span class="o">=&gt;</span> <span class="s1">'Person'</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+<p>Required: false</p>
+
+<p><table class="table table-responsive">
+        <tr>
+            <th>Parameter</th>
+            <th>Required</th>
+            <th>Allowed Values</th>
+            <th>Format</th>
+            <th>Description</th>
+        </tr>
+                    <tr>
+                <td>entity</td>
+                <td>                        yes
+                                    </td>
+                <td>
+                                            Person
+                                    </td>
+                <td>
+                    string
+                </td>
+                <td>static text, identify collection</td>
+            </tr>
+                    <tr>
+                <td>id</td>
+                <td>                        yes
+                                    </td>
+                <td>
+                                                        </td>
+                <td>
+                    integer
+                </td>
+                <td>the ID of major person</td>
+            </tr>
+                    <tr>
+                <td>properties</td>
+                <td>                        no
+                                    </td>
+                <td>
+                                                                        <a href="#properties-2">properties</a>
+                                                            </td>
+                <td>
+                    array
+                </td>
+                <td>array of properties</td>
+            </tr>
+                    <tr>
+                <td>methods</td>
+                <td>                        no
+                                    </td>
+                <td>
+                                                                        <a href="#methods-2">methods</a>
+                                                            </td>
+                <td>
+                    array
+                </td>
+                <td>array of methods</td>
+            </tr>
+            </table></p>
+<h3 id='properties-2'>Properties</h3><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$query_parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'item'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">25</span><span class="p">,</span>
+        <span class="s1">'entity'</span> <span class="o">=&gt;</span> <span class="s1">'Person'</span><span class="p">,</span>
+        <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'id'</span><span class="p">,</span> <span class="s1">'name'</span><span class="p">,</span> <span class="s1">'imageSrc'</span><span class="p">,</span> <span class="s1">'description'</span><span class="p">,</span> <span class="s1">'birthYear'</span><span class="p">,</span> <span class="s1">'birthMonth'</span><span class="p">,</span> <span class="s1">'birthDay'</span><span class="p">,</span> <span class="s1">'birthPlace'</span><span class="p">,</span>
+            <span class="s1">'deathYear'</span><span class="p">,</span> <span class="s1">'deathMonth'</span><span class="p">,</span> <span class="s1">'deathDay'</span><span class="p">,</span> <span class="s1">'deathPlace'</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+<p><table>
+        <thead>
+            <tr>
+                <th>Default</th>
+                <th>Valid Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>id, name</td>
+                <td>id, name, imageSrc, description, birthYear, birthMonth, birthDay, birthPlace, deathYear, deathMonth, deathDay, deathPlace</td>
+            </tr>
+        </tbody>
+    </table></p>
+<h3 id='methods-2'>Methods</h3><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$query_parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'item'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">25</span><span class="p">,</span>
+        <span class="s1">'entity'</span> <span class="o">=&gt;</span> <span class="s1">'Person'</span><span class="p">,</span>
+        <span class="s1">'methods'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'otherTitles'</span><span class="p">,</span> <span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'imageSrc'</span><span class="p">]],</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+<p><table class="table table-responsive">
+        <tr>
+            <th>Function</th>
+            <th>Parameters</th>
+            <th>Properties</th>
+            <th>Description</th>
+        </tr>
+                    <tr>
+                <td>otherTitles</td>
+                <td>
+                                                                            <div><span><strong>Name:</strong> </span>limit</div>
+    <div><span><strong>Required:</strong> </span> yes </div>
+    <div><span><strong>Type:</strong> </span>int</div>
+    <div><span><strong>Max value:</strong> </span>30</div></p>
+
+<p></td>
+                <td>
+                                                <div><span><strong>Default:</strong> </span>id, name, slug, imageSrc</div>
+    <div><span><strong>Valid Options:</strong> </span>id, name, description, imageSrc, season, episode, duration, contentRating, metascore, locations, keywords, awards, rating, releasedYear, releasedMonth, releasedDay, episodeParent, slug, category</div></p>
+
+<p></td>
+                <td>
+                    titles from major person
+                </td>
+            </tr>
+            </table></p>
+<h2 id='full-example-person'>Full Example (person)</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$query_parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'item'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">25</span><span class="p">,</span>
+        <span class="s1">'entity'</span> <span class="o">=&gt;</span> <span class="s1">'Person'</span><span class="p">,</span>
+        <span class="s1">'methods'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="p">[</span><span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'otherTitles'</span><span class="p">,</span> <span class="s1">'parameters'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'limit'</span> <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'imageSrc'</span><span class="p">]],</span>
+        <span class="p">],</span>
+        <span class="s1">'properties'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'id'</span><span class="p">,</span> <span class="s1">'name'</span><span class="p">,</span> <span class="s1">'imageSrc'</span><span class="p">,</span> <span class="s1">'description'</span><span class="p">,</span> <span class="s1">'birthYear'</span><span class="p">,</span> <span class="s1">'birthMonth'</span><span class="p">,</span> <span class="s1">'birthDay'</span><span class="p">,</span> <span class="s1">'birthPlace'</span><span class="p">,</span>
+            <span class="s1">'deathYear'</span><span class="p">,</span> <span class="s1">'deathMonth'</span><span class="p">,</span> <span class="s1">'deathDay'</span><span class="p">,</span> <span class="s1">'deathPlace'</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+<span class="nv">$api_key</span> <span class="o">=</span> <span class="nx">YOURAPIKEY</span><span class="p">;</span>
+
+<span class="nv">$httpClient</span> <span class="o">=</span> <span class="nx">HttpClient</span><span class="o">::</span><span class="na">create</span><span class="p">([</span>
+<span class="s1">'headers'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'X-AUTH-API'</span> <span class="o">=&gt;</span> <span class="nv">$api_key</span><span class="p">],</span>
+<span class="p">]);</span>
+
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$httpClient</span><span class="o">-&gt;</span><span class="na">request</span><span class="p">(</span><span class="s1">'GET'</span><span class="p">,</span> <span class="s1">'https://admin.bunny-holding.com/api'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'query'</span> <span class="o">=&gt;</span> <span class="nv">$query_parameters</span><span class="p">,]);</span>
+<span class="cp">?&gt;</span>
+</code></pre>
+<p>Working example with full configuration for person</p>
 
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
-                <a href="#" data-language-name="javascript">javascript</a>
+                <a href="#" data-language-name="php">php</a>
           </div>
       </div>
     </div>
