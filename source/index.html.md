@@ -23,10 +23,10 @@ $api_key = YOURAPIKEY;
 $query_parameters = QUERYPARAMETERS;
 
 $httpClient = HttpClient::create([
-'headers' => ['X-AUTH-API' => $api_key],
+    'headers' => ['X-AUTH-API' => $api_key],
 ]);
 
-$response = $httpClient->request('GET', 'https://admin.bunny-holding.com/api', ['query' => $query_parameters,]);
+$response = $httpClient->request('GET', 'https://affwebgen.com/api', ['query' => $query_parameters,]);
 
 ?>
 ```
@@ -34,12 +34,12 @@ $response = $httpClient->request('GET', 'https://admin.bunny-holding.com/api', [
 
 > Make sure to replace `YOURAPIKEY` with your API key and replace `QUERYPARAMETERS` with parameters as it is defined in API.
 
-Each project has different API key. Before making any request with your api key please be sure you configured allowed titles in [admin](https://admin.bunny-holding.com).
+Each project has different API key. Before making any request with your api key please be sure you configured allowed titles in [admin](https://affwebgen.com).
 
-To make any request use api url: <code>https://admin.bunny-holding.com/api</code> and send us <code>GET</code> request.
+To make any request use api url: <code>https://affwebgen.com/api</code> and send us <code>GET</code> request.
 
 <aside class="notice">
-    You must replace <code>YOURAPIKEY</code> with your API key from your project in [admin](https://admin.bunny-holding.com).
+    You must replace <code>YOURAPIKEY</code> with your API key from your project in [admin](https://affwebgen.com).
 </aside>
 
 # Query Parameters
@@ -982,7 +982,7 @@ $httpClient = HttpClient::create([
     'headers' => ['X-AUTH-API' => $api_key],
 ]);
 
-$response = $httpClient->request('GET', 'https://admin.bunny-holding.com/api', ['query' => $query_parameters,]);
+$response = $httpClient->request('GET', 'https://affwebgen.com/api', ['query' => $query_parameters,]);
 
 ?>
 ```
@@ -1230,7 +1230,7 @@ Working example with full configuration for title
 <?php
 $query_parameters = [
     'item' => [
-        'id' => 25,
+        'id' => 2433,
         'entity' => 'Person',
     ],
 ];
@@ -1244,8 +1244,8 @@ $query_parameters = [
 ```json
 {
   "item": {
-    "id": 25,
-    "name": "Jeté Laurence"
+    "id": 2433,
+    "name": "Keanu Reeves"
   }
 }
 
@@ -1320,7 +1320,7 @@ $query_parameters = [
 <?php
 $query_parameters = [
     'item' => [
-        'id' => 25,
+        'id' => 2433,
         'entity' => 'Person',
         'properties' => [
             'id', 'name', 'imageSrc', 'description', 'birthYear', 'birthMonth', 'birthDay', 'birthPlace',
@@ -1338,14 +1338,14 @@ $query_parameters = [
 ```json
 {
   "item": {
-    "id": 25,
-    "name": "Jeté Laurence",
-    "imageSrc": "https://m.media-amazon.com/images/M/MV5BM2Q5NjA0ZTMtZWM4Yi00ZjkxLWIyNTYtMzcyYjBiMTdhNWI5XkEyXkFqcGdeQXVyNjg2NjQwMDQ@._V1_UY317_CR130,0,214,317_AL_.jpg",
-    "description": "Jeté Laurence is an actress, known for The Snowman (2017), The Americans (2013) and Jessica Jones (2015).",
-    "birthYear": null,
-    "birthMonth": null,
-    "birthDay": null,
-    "birthPlace": null,
+    "id": 2433,
+    "name": "Keanu Reeves",
+    "imageSrc": "https://m.media-amazon.com/images/M/MV5BNjUxNDcwMTg4Ml5BMl5BanBnXkFtZTcwMjU4NDYyOA@@._V1_UY317_CR15,0,214,317_AL_.jpg",
+    "description": "Keanu Charles Reeves, whose first name means \"cool breeze over the mountains\" in Hawaiian, was born September 2, 1964 in Beirut, Lebanon. He is the son of Patricia Taylor, a showgirl and costume designer, and Samuel Nowlin Reeves, a geologist. Keanu's father was born in Hawaii, of British, Portuguese, Native Hawaiian, and Chinese ancestry, and ...",
+    "birthYear": 1964,
+    "birthMonth": 9,
+    "birthDay": 2,
+    "birthPlace": "Beirut, Lebanon",
     "deathYear": null,
     "deathMonth": null,
     "deathDay": null,
@@ -1382,7 +1382,7 @@ $query_parameters = [
 <?php
 $query_parameters = [
     'item' => [
-        'id' => 25,
+        'id' => 2433,
         'entity' => 'Person',
         'methods' => [
             ['function' => 'otherTitles', 'parameters' => ['limit' => 1], 'properties' => ['imageSrc']],
@@ -1399,9 +1399,16 @@ $query_parameters = [
 ```json
 {
   "item": {
-    "id": 25,
-    "name": "Jeté Laurence",
-    "otherTitles": []
+    "id": 2433,
+    "name": "Keanu Reeves",
+    "otherTitles": [
+      {
+        "id": 204430,
+        "name": "Episode dated 2 September 2014",
+        "slug": "episode-dated-2-september-2014",
+        "imageSrc": null
+      }
+    ]
   }
 }
 
@@ -1446,7 +1453,7 @@ $query_parameters = [
 <?php
 $query_parameters = [
     'item' => [
-        'id' => 25,
+        'id' => 2433,
         'entity' => 'Person',
         'methods' => [
             ['function' => 'otherTitles', 'parameters' => ['limit' => 1], 'properties' => ['imageSrc']],
@@ -1463,7 +1470,7 @@ $httpClient = HttpClient::create([
     'headers' => ['X-AUTH-API' => $api_key],
 ]);
 
-$response = $httpClient->request('GET', 'https://admin.bunny-holding.com/api', ['query' => $query_parameters,]);
+$response = $httpClient->request('GET', 'https://affwebgen.com/api', ['query' => $query_parameters,]);
 
 ?>
 ```
@@ -1474,19 +1481,26 @@ $response = $httpClient->request('GET', 'https://admin.bunny-holding.com/api', [
 ```json
 {
   "item": {
-    "id": 25,
-    "name": "Jeté Laurence",
-    "imageSrc": "https://m.media-amazon.com/images/M/MV5BM2Q5NjA0ZTMtZWM4Yi00ZjkxLWIyNTYtMzcyYjBiMTdhNWI5XkEyXkFqcGdeQXVyNjg2NjQwMDQ@._V1_UY317_CR130,0,214,317_AL_.jpg",
-    "description": "Jeté Laurence is an actress, known for The Snowman (2017), The Americans (2013) and Jessica Jones (2015).",
-    "birthYear": null,
-    "birthMonth": null,
-    "birthDay": null,
-    "birthPlace": null,
+    "id": 2433,
+    "name": "Keanu Reeves",
+    "imageSrc": "https://m.media-amazon.com/images/M/MV5BNjUxNDcwMTg4Ml5BMl5BanBnXkFtZTcwMjU4NDYyOA@@._V1_UY317_CR15,0,214,317_AL_.jpg",
+    "description": "Keanu Charles Reeves, whose first name means \"cool breeze over the mountains\" in Hawaiian, was born September 2, 1964 in Beirut, Lebanon. He is the son of Patricia Taylor, a showgirl and costume designer, and Samuel Nowlin Reeves, a geologist. Keanu's father was born in Hawaii, of British, Portuguese, Native Hawaiian, and Chinese ancestry, and ...",
+    "birthYear": 1964,
+    "birthMonth": 9,
+    "birthDay": 2,
+    "birthPlace": "Beirut, Lebanon",
     "deathYear": null,
     "deathMonth": null,
     "deathDay": null,
     "deathPlace": null,
-    "otherTitles": []
+    "otherTitles": [
+      {
+        "id": 204430,
+        "name": "Episode dated 2 September 2014",
+        "slug": "episode-dated-2-september-2014",
+        "imageSrc": null
+      }
+    ]
   }
 }
 
