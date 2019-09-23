@@ -978,9 +978,10 @@ $query_parameters = [
     ],
 ];
 $api_key = YOURAPIKEY;
+$host = YOURDOMAIN;
 
 $httpClient = HttpClient::create([
-    'headers' => ['X-AUTH-API' => $api_key],
+    'headers' => ['X-AUTH-API' => $api_key, 'Referer' => $host],
 ]);
 
 $response = $httpClient->request('GET', 'https://affwebgen.com/api', ['query' => $query_parameters,]);
