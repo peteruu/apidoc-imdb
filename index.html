@@ -1190,9 +1190,10 @@ In examples we are using Symfony component called <a href="https://symfony.com/d
     <span class="p">],</span>
 <span class="p">];</span>
 <span class="nv">$api_key</span> <span class="o">=</span> <span class="nx">YOURAPIKEY</span><span class="p">;</span>
+<span class="nv">$host</span> <span class="o">=</span> <span class="nx">YOURDOMAIN</span><span class="p">;</span>
 
 <span class="nv">$httpClient</span> <span class="o">=</span> <span class="nx">HttpClient</span><span class="o">::</span><span class="na">create</span><span class="p">([</span>
-    <span class="s1">'headers'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'X-AUTH-API'</span> <span class="o">=&gt;</span> <span class="nv">$api_key</span><span class="p">],</span>
+    <span class="s1">'headers'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'X-AUTH-API'</span> <span class="o">=&gt;</span> <span class="nv">$api_key</span><span class="p">,</span> <span class="s1">'Referer'</span> <span class="o">=&gt;</span> <span class="nv">$host</span><span class="p">],</span>
 <span class="p">]);</span>
 
 <span class="nv">$response</span> <span class="o">=</span> <span class="nv">$httpClient</span><span class="o">-&gt;</span><span class="na">request</span><span class="p">(</span><span class="s1">'GET'</span><span class="p">,</span> <span class="s1">'https://affwebgen.com/api'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'query'</span> <span class="o">=&gt;</span> <span class="nv">$query_parameters</span><span class="p">,]);</span>
